@@ -27,11 +27,10 @@ def update_cell_to_file_name(
     gc = service_account(filename=Config.SERVICE_ACCOUNT_FILE_NAME)
     for dict_ in dict_files:
         for file_name, file_id in dict_.items():
-            logging.info(f'{file_id}\t{file_name}')
             ss = gc.open_by_key(file_id)
             ws = ss.get_worksheet(default_worksheet)
             ws.update_acell(cell_name, file_name)
-            logging.info(f'In file ({file_id}) {cell_name} updated to {file_name}.')
+            logging.info(f'In file ({file_id}) {cell_name} updated to \'{file_name}\'')
 
 
 if __name__ == '__main__':
@@ -72,7 +71,8 @@ if __name__ == '__main__':
         copy_file_id = drive.copy_file_to_folder(
             Config.ADMIN_FILE_ID,
             admin_folder_id,
-            file_name)
+            file_name
+        )
         drive.update_permission(
             copy_file_id,
             emails=Config.WRITER_ACCESS_EMAILS

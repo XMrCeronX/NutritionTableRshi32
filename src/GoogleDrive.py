@@ -43,7 +43,7 @@ class GoogleDrive:
 
         items = results.get("files", [])
         for item in items:
-            logging.info(f"{' ' * indent}{item['mimeType']} | '{item['name']}' ({item['id']})")
+            print(f"{' ' * indent}{item['mimeType']} | '{item['name']}' ({item['id']})")
             if item['mimeType'] == 'application/vnd.google-apps.folder':
                 self.print_all_files(item['id'], indent + indent_tab)
 
