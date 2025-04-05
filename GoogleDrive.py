@@ -4,7 +4,6 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 from decorators.http_errors import handle_http_errors
 
@@ -86,7 +85,7 @@ class GoogleDrive:
         ).execute()
 
     @handle_http_errors()
-    def copy_file_to_folder(self, file_id, folder_id, new_title=None):
+    def copy_file_to_folder(self, file_id, folder_id, new_title=None, data=None):
         file = self.get_files(file_id, "name, mimeType")
 
         # Если не указано новое название, оставляем исходное
@@ -105,10 +104,12 @@ class GoogleDrive:
         ).execute()
 
         print(f"File '{file['name']}' copied to folder {folder_id} with name \'{new_title}\' ({result['id']})")
+        if data is not None:
+            data.append({f'{new_title}': result['id']})
         return result["id"]
 
     @handle_http_errors()
-    def update_permission(self, file_id, role='writer', type_='anyone'):
+    def update_permission(self, file_id, role='writer', type_='anyone', emails=None):
         permission = self.service.permissions().create(
             fileId=file_id,
             body={
@@ -120,4 +121,24 @@ class GoogleDrive:
         # print(f"Permission ID: {permission_id}")
         # print(f"FILE: https://drive.google.com/file/d/{file_id}/edit")
         link_to_file = f'https://docs.google.com/spreadsheets/d/{file_id}/edit'
-        print(f"Link ({permission_id}): {link_to_file}")
+        result_strings = [f"Link ({permission_id}): {link_to_file}"]
+
+        if emails:  # полный доступ по email
+            for email in emails:
+                self.service.permissions().create(
+                    fileId=file_id,
+                    body={
+                        'role': role,
+                        'type': 'user',
+                        'emailAddress': email,
+                    },
+                    # без уведомления пользователя, иначе засрет почту
+                    sendNotificationEmail=False,
+                ).execute()
+                result_strings.append(f'{email} ({role})')
+
+        print(' + '.join(result_strings))
+
+    def copy_file_with_update_permission(self, file_id, folder_id, new_title=None):
+        copy_file_id = self.copy_file_to_folder(file_id, folder_id, new_title)
+        self.update_permission(copy_file_id)
