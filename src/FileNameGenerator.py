@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 
 class FileNameGenerator:
-    DEFAULT_DATE_FORMAT = '%d.%m.%Y'
+    DEFAULT_DATE_FORMAT = '%drive.%m.%Y'
 
     def get_current_week(self, include_days=None):
         """

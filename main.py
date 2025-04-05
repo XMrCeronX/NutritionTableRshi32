@@ -1,62 +1,68 @@
 from gspread import service_account
 
-from FileNameGenerator import FileNameGenerator
-from GoogleDrive import GoogleDrive
-from config.BaseConfig import Config
+from src.FileNameGenerator import FileNameGenerator
+from src.GoogleDrive import GoogleDrive
+from config import Config
 
 
-def update_nutrition_cell_to_file_name(data):
-    gc = service_account(filename='service_account.json')
-    for dict_ in data:
+def update_cell_to_file_name(
+        dict_files,
+        cell_name='B1',
+        default_worksheet=0
+):
+    gc = service_account(filename=Config.SERVICE_ACCOUNT_FILE_NAME)
+    for dict_ in dict_files:
         for file_name, file_id in dict_.items():
             print(f'{file_id}\t{file_name}')
-
-            wks = gc.open_by_key(file_id).get_worksheet(0)
-            wks.update_acell('B1', file_name)
-            print('Cell updated.')
-
-            # Update a range of cells using the top left corner address
-            # wks.update([[1, 2], [3, 4]], 'A1')
-
-            # Or update a single cell
-            # wks.update_acell('B1', '')
-            #
-            # # Format the header
-            # wks.format('A1:B1', {'textFormat': {'bold': True}})
+            ss = gc.open_by_key(file_id)
+            ws = ss.get_worksheet(default_worksheet)
+            ws.update_acell(cell_name, file_name)
+            print(f'In file ({file_id}) {cell_name} updated to {file_name}.')
 
 
 if __name__ == '__main__':
 
+    file_name_generator = FileNameGenerator()
+    drive = GoogleDrive()
     data = []
 
     # =============== Для питания ===============
-    date_range = FileNameGenerator().get_date_range(
-        start_date='07.04.2025',
-        end_date='11.04.2025',
-        include_days=Config.INCLUDE_DAYS  # с пн по пт
+    nutrition_date_range = file_name_generator.get_date_range(
+        start_date=Config.START_DATE,
+        end_date=Config.END_DATE,
+        include_days=Config.NUTRITION_INCLUDE_DAYS
     )
-    print(date_range)
-
-    d = GoogleDrive()
-    scripts_folder_id = d.create_folder(Config.FOLDER)
-    for file_name in date_range:
-        copy_file_id = d.copy_file_to_folder(Config.NUTRITION_EMPTY_FILE_ID, scripts_folder_id, file_name, data)
-        d.update_permission(copy_file_id, emails=Config.WRITER_ACCESS_EMAILS)
+    print(nutrition_date_range)
+    nutrition_folder_id = drive.create_folder(Config.NUTRITION_FOLDER)
+    for file_name in nutrition_date_range:
+        copy_file_id = drive.copy_file_to_folder(
+            Config.NUTRITION_FILE_ID,
+            nutrition_folder_id,
+            file_name,
+            data
+        )
+        drive.update_permission(
+            copy_file_id,
+            emails=Config.WRITER_ACCESS_EMAILS
+        )
 
     # =============== Для админов ===============
-    date_range = FileNameGenerator().get_date_range(
-        start_date='07.04.2025',
-        end_date='11.04.2025',
-        include_days=[0, 1, 2, 3]  # с пн по чт
+    admin_date_range = file_name_generator.get_date_range(
+        start_date=Config.START_DATE,
+        end_date=Config.END_DATE,
+        include_days=Config.ADMIN_INCLUDE_DAYS
     )
-    print(date_range)
-
-    d = GoogleDrive()
-    scripts_folder_id = d.create_folder(f'{Config.FOLDER}/admin')
-    for file_name in date_range:
-        copy_file_id = d.copy_file_to_folder('1JxhrhfgNIgq_B7pdh1pcznbWMOc9dpZNFUv5S8XLjXE', scripts_folder_id,
-                                             file_name)
-        d.update_permission(copy_file_id, emails=Config.WRITER_ACCESS_EMAILS)
+    print(admin_date_range)
+    admin_folder_id = drive.create_folder()
+    for file_name in admin_date_range:
+        copy_file_id = drive.copy_file_to_folder(
+            Config.ADMIN_FILE_ID,
+            admin_folder_id,
+            file_name)
+        drive.update_permission(
+            copy_file_id,
+            emails=Config.WRITER_ACCESS_EMAILS
+        )
 
     print(data)
-    update_nutrition_cell_to_file_name(data)
+    update_cell_to_file_name(data)

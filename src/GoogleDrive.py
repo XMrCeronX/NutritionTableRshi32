@@ -118,8 +118,6 @@ class GoogleDrive:
             }
         ).execute()
         permission_id = permission.get('id')
-        # print(f"Permission ID: {permission_id}")
-        # print(f"FILE: https://drive.google.com/file/d/{file_id}/edit")
         link_to_file = f'https://docs.google.com/spreadsheets/d/{file_id}/edit'
         result_strings = [f"Link ({permission_id}): {link_to_file}"]
 
@@ -138,7 +136,3 @@ class GoogleDrive:
                 result_strings.append(f'{email} ({role})')
 
         print(' + '.join(result_strings))
-
-    def copy_file_with_update_permission(self, file_id, folder_id, new_title=None):
-        copy_file_id = self.copy_file_to_folder(file_id, folder_id, new_title)
-        self.update_permission(copy_file_id)
