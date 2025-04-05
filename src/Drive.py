@@ -19,7 +19,7 @@ class Drive:
     def print_all_files(self, folder_id='root', indent=0, indent_tab=4):
         file_list = self.drive.ListFile({'q': f"'{folder_id}' in parents and trashed=false"}).GetList()
         for file in file_list:
-            print(f"{' ' * indent}{file['mimeType']} | \'{file['title']}\' ({file['id']})")
+            logging.info(f"{' ' * indent}{file['mimeType']} | \'{file['title']}\' ({file['id']})")
             if file['mimeType'] == 'application/vnd.google-apps.folder':
                 self.print_all_files(file['id'], indent + indent_tab)
 
@@ -34,7 +34,7 @@ class Drive:
 
         if file_list:
             folder_id = file_list[0]['id']
-            print(f'Folder \'{folder_name}\' ({folder_id}) already exists on Google Drive.')
+            logging.info(f'Folder \'{folder_name}\' ({folder_id}) already exists on Google Drive.')
             return folder_id
         else:
             folder = self.drive.CreateFile({
@@ -43,7 +43,7 @@ class Drive:
             })
             folder.Upload()
             folder_id = folder['id']
-            print(f'Folder \'{folder_name}\' ({folder_id}) was created on Google Drive.')
+            logging.info(f'Folder \'{folder_name}\' ({folder_id}) was created on Google Drive.')
             return folder_id
 
     def copy_file_to_folder(self, file_id, folder_id):
@@ -63,4 +63,4 @@ class Drive:
         import os
         os.remove('temp_file')
 
-        print(f"File '{file['title']}' was copied to folder ID: {folder_id}")
+        logging.info(f"File '{file['title']}' was copied to folder ID: {folder_id}")

@@ -1,8 +1,15 @@
+import logging
+
+
 class Config():
     # Google sheets:
     SERVICE_ACCOUNT_FILE_NAME = 'service_account.json'
     START_DATE = '07.04.2025'
     END_DATE = '11.04.2025'
+    # logging
+    LOG_FILE_NAME = 'log.log'
+    DEBUG_LEVEL = logging.INFO
+    LOG_ENCODING = 'UTF-8'
 
     # Google Drive API:
     # список отдельных почт которым будет предоставлен полный доступ

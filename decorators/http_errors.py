@@ -7,7 +7,7 @@ def handle_http_errors(exception_type=HttpError, error_message="HttpError"):
             try:
                 return func(*args, **kwargs)
             except exception_type as error:
-                print(f"{error_message}: {error}.")
+                logging.info(f"{error_message}: {error}.")
                 return None  # обязателен
 
         return wrapper

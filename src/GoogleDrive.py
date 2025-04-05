@@ -1,3 +1,4 @@
+import logging
 import os
 
 from google.auth.transport.requests import Request
@@ -42,13 +43,13 @@ class GoogleDrive:
 
         items = results.get("files", [])
         for item in items:
-            print(f"{' ' * indent}{item['mimeType']} | '{item['name']}' ({item['id']})")
+            logging.info(f"{' ' * indent}{item['mimeType']} | '{item['name']}' ({item['id']})")
             if item['mimeType'] == 'application/vnd.google-apps.folder':
                 self.print_all_files(item['id'], indent + indent_tab)
 
     @handle_http_errors()
     def create_folder(self, folder_name, parent_id='root'):
-        print(f'Creating folder with name \'{folder_name}\'...')
+        logging.info(f'Creating folder with name \'{folder_name}\'...')
         # Проверка существования папки
         response = self.service.files().list(
             q=f"name='{folder_name}' and mimeType='application/vnd.google-apps.folder' and '{parent_id}' in parents and trashed=false",
@@ -57,7 +58,7 @@ class GoogleDrive:
 
         if response.get("files"):
             folder_id = response["files"][0]["id"]
-            print(f"Folder '{folder_name}' ({folder_id}) already exists.")
+            logging.info(f"Folder '{folder_name}' ({folder_id}) already exists.")
             return folder_id
 
         # Создание новой папки
@@ -68,7 +69,7 @@ class GoogleDrive:
         }
 
         folder = self.service.files().create(body=folder_metadata, fields="id").execute()
-        print(f"Folder '{folder_name}' ({folder['id']}) created.")
+        logging.info(f"Folder '{folder_name}' ({folder['id']}) created.")
         return folder["id"]
 
     @handle_http_errors()
@@ -103,7 +104,7 @@ class GoogleDrive:
             fields="id, name"
         ).execute()
 
-        print(f"File '{file['name']}' copied to folder {folder_id} with name \'{new_title}\' ({result['id']})")
+        logging.info(f"File '{file['name']}' copied to folder {folder_id} with name \'{new_title}\' ({result['id']})")
         if data is not None:
             data.append({f'{new_title}': result['id']})
         return result["id"]
@@ -135,4 +136,4 @@ class GoogleDrive:
                 ).execute()
                 result_strings.append(f'{email} ({role})')
 
-        print(' + '.join(result_strings))
+        logging.info(' + '.join(result_strings))
