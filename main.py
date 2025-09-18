@@ -2,21 +2,10 @@ import logging
 
 from gspread import service_account
 
+from config import Config
+from logs.logs import init_logging
 from src.FileNameGenerator import FileNameGenerator
 from src.GoogleDrive import GoogleDrive
-from config import Config
-
-logFormatter = logging.Formatter("%(asctime)s [%(threadName)s] [%(levelname)-5.5s]: %(message)s.")
-rootLogger = logging.getLogger()
-rootLogger.setLevel(Config.DEBUG_LEVEL)
-
-fileHandler = logging.FileHandler(Config.LOG_FILE_NAME, 'a', Config.LOG_ENCODING)
-fileHandler.setFormatter(logFormatter)
-rootLogger.addHandler(fileHandler)
-
-consoleHandler = logging.StreamHandler()
-consoleHandler.setFormatter(logFormatter)
-rootLogger.addHandler(consoleHandler)
 
 
 def update_cell_to_file_name(
@@ -33,7 +22,8 @@ def update_cell_to_file_name(
             logging.info(f'In file ({file_id}) {cell_name} updated to \'{file_name}\'')
 
 
-if __name__ == '__main__':
+def main():
+    init_logging()
 
     file_name_generator = FileNameGenerator()
     drive = GoogleDrive()
@@ -80,3 +70,7 @@ if __name__ == '__main__':
 
     logging.info(data)
     update_cell_to_file_name(data)
+
+
+if __name__ == '__main__':
+    main()

@@ -1,14 +1,14 @@
 import logging
 
 
-class Config():
+class Config:
     # Google sheets:
     SERVICE_ACCOUNT_FILE_NAME = 'service_account.json'
     # FileNameGenerator
-    START_DATE = '14.04.2025'
-    END_DATE = '20.04.2025'
+    START_DATE = '26.05.2025'
+    END_DATE = '30.05.2025'
     # logging
-    LOG_FILE_NAME = 'log.log'
+    LOG_FILE_NAME = 'big_range.log'
     LEVEL = logging.INFO
     LOG_ENCODING = 'UTF-8'
 
@@ -27,7 +27,7 @@ class Config():
 
     # =============== Для админов ===============
     # папка на google диске в которую все будет скопировано
-    ADMIN_FOLDER = f'{NUTRITION_FOLDER}/admin'
+    ADMIN_FOLDER = f'{NUTRITION_FOLDER}_admin'
     # ID файла с питанием
     ADMIN_FILE_ID = '1JxhrhfgNIgq_B7pdh1pcznbWMOc9dpZNFUv5S8XLjXE'
     ADMIN_INCLUDE_DAYS = [0, 1, 2, 3]  # с пн по чт
