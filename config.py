@@ -5,10 +5,10 @@ class Config:
     # Google sheets:
     SERVICE_ACCOUNT_FILE_NAME = 'service_account.json'
     # FileNameGenerator
-    START_DATE = '26.05.2025'
-    END_DATE = '30.05.2025'
+    START_DATE = '06.11.2025'
+    END_DATE = '21.11.2025'
     # logging
-    LOG_FILE_NAME = 'big_range.log'
+    LOG_FILE_NAME = 'log.log'
     LEVEL = logging.INFO
     LOG_ENCODING = 'UTF-8'
 
@@ -22,12 +22,13 @@ class Config:
     # папка на google диске в которую все будет скопировано
     NUTRITION_FOLDER = 'scripts'
     # ID файла с питанием
-    NUTRITION_FILE_ID = '1yjFeXLYGt5ApN6IFyJa24aKn_2e5QZMGr0QJ_17E080'
+    NUTRITION_FILE_ID = '1fVKtRoCZIqSzXW5m8qNznlewgVOZpLAuNO3Jjt_gPOw'
     NUTRITION_INCLUDE_DAYS = [0, 1, 2, 3, 4]  # с пн по пт
 
     # =============== Для админов ===============
     # папка на google диске в которую все будет скопировано
     ADMIN_FOLDER = f'{NUTRITION_FOLDER}_admin'
     # ID файла с питанием
-    ADMIN_FILE_ID = '1JxhrhfgNIgq_B7pdh1pcznbWMOc9dpZNFUv5S8XLjXE'
+    ADMIN_FILE_ID = '1suEg_va7ZwhbOd8RFXhM-rfx_IpbiB0zK590lOGNbsg'
     ADMIN_INCLUDE_DAYS = [0, 1, 2, 3]  # с пн по чт
+    # Удалить token.jsonесли токен истёк
