@@ -20,7 +20,7 @@ class GoogleDrive:
         creds = None
         if os.path.exists(token_file):
             creds = Credentials.from_authorized_user_file(token_file, self.SCOPES)
-
+        # если creds.expired то удалить файл token.json и дать доступ
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
@@ -34,20 +34,6 @@ class GoogleDrive:
         return build("drive", "v3", credentials=creds)
 
     @handle_http_errors()
-    def print_all_files(self, folder_id='root', indent=0, indent_tab=4):
-        results = self.service.files().list(
-            q=f"'{folder_id}' in parents and trashed=false",
-            fields="nextPageToken, files(id, name, mimeType)",
-            pageSize=1000
-        ).execute()
-
-        items = results.get("files", [])
-        for item in items:
-            print(f"{' ' * indent}{item['mimeType']} | '{item['name']}' ({item['id']})")
-            if item['mimeType'] == 'application/vnd.google-apps.folder':
-                self.print_all_files(item['id'], indent + indent_tab)
-
-    @handle_http_errors()
     def create_folder(self, folder_name, parent_id='root'):
         logging.info(f'Creating folder with name \'{folder_name}\'...')
         # Проверка существования папки
@@ -58,7 +44,7 @@ class GoogleDrive:
 
         if response.get("files"):
             folder_id = response["files"][0]["id"]
-            logging.info(f"Folder '{folder_name}' ({folder_id}) already exists.")
+            logging.info(f"Folder '{folder_name}' already exists.")
             return folder_id
 
         # Создание новой папки
