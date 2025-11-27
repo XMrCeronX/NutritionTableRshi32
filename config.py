@@ -5,8 +5,8 @@ class Config:
     # Google sheets:
     SERVICE_ACCOUNT_FILE_NAME = 'service_account.json'
     # FileNameGenerator
-    START_DATE = '06.11.2025'
-    END_DATE = '21.11.2025'
+    START_DATE = '01.12.2025'
+    END_DATE = '26.12.2025'
     # logging
     LOG_FILE_NAME = 'log.log'
     LEVEL = logging.INFO
@@ -31,4 +31,4 @@ class Config:
     # ID файла с питанием
     ADMIN_FILE_ID = '1suEg_va7ZwhbOd8RFXhM-rfx_IpbiB0zK590lOGNbsg'
     ADMIN_INCLUDE_DAYS = [0, 1, 2, 3]  # с пн по чт
-    # Удалить token.jsonесли токен истёк
+    # Удалить token.json если токен истёк
