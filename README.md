@@ -46,35 +46,35 @@ Encountered 403 Forbidden with reason "accessNotConfigured".
 Google Cloud Console → APIs & Services → Library
 найти и включить "Google Drive API" и "Google Sheets API" (ENABLE)
 
-Создать файлы с таблицами. Берем ссылку. Пример:
-https://docs.google.com/spreadsheets/d/1Ah4-3-To8o2Hn4rAy8o9L6_etitAfn86/edit?gid=1953053157#gid=1953053157
-забираем от туда ID файла - "1Ah4-3-To8o2Hn4rAy8o9L6_etitAfn86"
-и вставляем в конфиг и меняем NUTRITION_FILE_ID. 
+Создать файлы с таблицами. Берем ссылку.\
+Пример:\
+https://docs.google.com/spreadsheets/d/1Ah4-3-To8o2Hn4rAy8o9L6_etitAfn86/edit?gid=1953053157#gid=1953053157 \
+забираем от туда ID файла - "1Ah4-3-To8o2Hn4rAy8o9L6_etitAfn86" \
+и вставляем в конфиг и меняем NUTRITION_FILE_ID. \
 Аналогично с ADMIN_FILE_ID.
 
-! При добавлении создании файлов, стоит учесть что таблицу 
-нужно сохранять как Google Таблицу, а не как .xlsx файл! 
-Или же просто сохранить как Google таблицу: 
-
-Файл -> Сохранить как таблицу Google + изменить NUTRITION_FILE_ID 
+! При добавлении создании файлов, стоит учесть что таблицу\
+нужно сохранять как Google Таблицу, а не как .xlsx файл!\
+Или же просто сохранить как Google таблицу:\
+Файл -> Сохранить как таблицу Google + изменить NUTRITION_FILE_ID\
 ADMIN_FILE_ID для соответствующих файлов
 
 Иначе будет ошибка: 
 gspread.exceptions.APIError: APIError: [400]: This operation is not supported for this document
 
-Поменять почту в WRITER_ACCESS_EMAILS для Service Account
-Пример:
+Поменять почту в WRITER_ACCESS_EMAILS для Service Account\
+Пример:\
 noname@pure-iris-479510-u3.iam.gserviceaccount.com
 
-Зайти в Credentials найти созданный Service Accounts. 
-Нажать на него и зайти во вкладку Keys и добавить ключ JSON. 
-Скачается файл, преименовать его в "service_account.json" и добавить в проект.
+Зайти в Credentials найти созданный Service Accounts.\
+Нажать на него и зайти во вкладку Keys и добавить ключ JSON.\
+Скачается файл, преименовать его в "service_account.json" и добавить в проект.\
 Пример JSON:
-  "type": "service_account",
-  "project_id": "*****",
-  "private_key_id": "*****",
-  "private_key": "*****",
-  "client_email": "noname@pure-iris-479510-u3.iam.gserviceaccount.com",
+  "type": "service_account",\
+  "project_id": "*****",\
+  "private_key_id": "*****",\
+  "private_key": "*****",\
+  "client_email": "noname@pure-iris-479510-u3.iam.gserviceaccount.com",\
   ......
 
 Полезные материалы:
