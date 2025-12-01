@@ -6,7 +6,7 @@ class Config:
     SERVICE_ACCOUNT_FILE_NAME = 'service_account.json'
     # FileNameGenerator
     START_DATE = '01.12.2025'
-    END_DATE = '26.12.2025'
+    END_DATE = '02.12.2025'
     # logging
     LOG_FILE_NAME = 'log.log'
     LEVEL = logging.INFO
@@ -15,20 +15,20 @@ class Config:
     # Google Drive API:
     # список отдельных почт которым будет предоставлен полный доступ
     WRITER_ACCESS_EMAILS = [
-        'noname@my-project-test-455417.iam.gserviceaccount.com',  # сервис акк обязателен!
+        'noname@pure-iris-479510-u3.iam.gserviceaccount.com',  # сервис акк обязателен!
         'eabrsim@gmail.com'
     ]
     # =============== Для питания ===============
     # папка на google диске в которую все будет скопировано
     NUTRITION_FOLDER = 'scripts'
     # ID файла с питанием
-    NUTRITION_FILE_ID = '1fVKtRoCZIqSzXW5m8qNznlewgVOZpLAuNO3Jjt_gPOw'
+    NUTRITION_FILE_ID = '1VLTKuGWecWQNN_GBW9QYJ6LAgwixluwg3APs9bAdmkM'
     NUTRITION_INCLUDE_DAYS = [0, 1, 2, 3, 4]  # с пн по пт
 
     # =============== Для админов ===============
     # папка на google диске в которую все будет скопировано
     ADMIN_FOLDER = f'{NUTRITION_FOLDER}_admin'
     # ID файла с питанием
-    ADMIN_FILE_ID = '1suEg_va7ZwhbOd8RFXhM-rfx_IpbiB0zK590lOGNbsg'
+    ADMIN_FILE_ID = '1ZrN6ZqLjRcdQS4Cv6_M8uPQhqTViGB7QOnC9vGkmhfQ'
     ADMIN_INCLUDE_DAYS = [0, 1, 2, 3]  # с пн по чт
     # Удалить token.json если токен истёк
